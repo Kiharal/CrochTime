@@ -68,6 +68,11 @@ html body{
 }
 .create:hover {
     background-color: #003049;
+    cursor: pointer;
+}
+
+.create button:hover{
+    cursor: pointer;
 }
 
 .table-container {

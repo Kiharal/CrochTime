@@ -11,7 +11,7 @@
         <tr>
             <td>CR{{ $task->order_id }}</td>
             <td>
-                <x-table-td status="{{ $task->Status }}">{{$task->Status}}</x-table-td>
+                <x-task-status status="{{ $task->Status }}">{{$task->Status}}</x-task-status>
             </td>
             <td >{{$task->created_at}}</td>
             <td >{{ $task->Work_remaining }}</td>
