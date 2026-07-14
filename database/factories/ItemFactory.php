@@ -20,12 +20,9 @@ class ItemFactory extends Factory
      */
     public function definition(int $width=400, int $height=400): array
     {
-        $filename = 'posts/' . fake()->uuid() . '.jpg';
-        Storage::disk('public')->put(
-            $filename,
-            UploadedFile::fake()->image('post.jpg', $width, $height)->get()
-        );
+        $filename = $this->faker->imageUrl(800, 600);
 
+        
         return [
             'user_id' => User::factory(),
             'description' => fake()->text(500),

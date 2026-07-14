@@ -2,18 +2,18 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Faker;
+use Illuminate\Support\ServiceProvider;
 use Faker\Generator as FakerGenerator;
 use Faker\Factory as FakerFactory;
-use Illuminate\Database\Eloquent\Factories as Eloquentfactory;
+use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 
 class CrochetImageFaker extends ServiceProvider
 {
     /**
      * Register services.
      */
-    public function register(): void
+    public function register()
     {
         $this->app->singleton(FakerGenerator::class, function () {
             $faker = FakerFactory::create();
