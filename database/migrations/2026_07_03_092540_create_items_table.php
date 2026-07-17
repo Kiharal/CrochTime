@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             #ID FOR BUSINESS OWNER(i.e. CROCHETER)
             $table->foreignIdFor(User::class);
+            $table->string("item_name");
             $table->longText("description");
             $table->string("image_path")->nullable();
             $table->unsignedBigInteger("image_height");

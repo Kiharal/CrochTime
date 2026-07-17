@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreItemRequest;
 use App\Models\Item;
 use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
     //Customer side
     public function index(){
-        $posts = Item::with('user:id,name')
+        $items = Item::with('user:id,name')
+                ->latest()
                 ->get();
 
-        return view('customer.view', compact('posts'));
+        return view('customer.view', compact('items'));
     }
 
     //Owner Side
@@ -24,17 +26,31 @@ class ItemController extends Controller
 
     //Owner side
     public function store(StoreItemRequest $request){
+        //Validations done in custom Sytroe Item request obvi
+        $user = Auth::user() ? Auth::id() : 1;
+        $validated = $request->validated();
+
         $file = $request->file('image');
-        [$width, $height] = getimagesize($file->getRealPath());
+        try {
+            [$width, $height] = getimagesize($file->getRealPath());
+        }
+        catch(Exception){
+            $width = 0;
+            $height = 0;
+
+        }
         $path = $file->store('image', 'public');
 
-        $validated = $request->validate([
-            'description' => ['max:600']
+        Item::create([
+            'description' => $validated['description'],
+            'item_name' => $validated['item_name'],
+            'image_path' => $path,
+            'image_height' => $height,
+            'image_width' => $width,
+            'user_id' => $user
         ]);
 
-        Item::create($validated);
-
-        return redirect()->route('customer.view')->with('message', 'Posted!');
+        return redirect()->route('launch')->with('message', 'Posted!');
     }
 
     //Customer side
@@ -50,8 +66,8 @@ class ItemController extends Controller
 
 
     //Owner side
-    public function update(Request $request, $id){
-        $user = User::findOrFail($id);
+    public function update(Request $request, Item $item){
+        $user = $item->user;
 
         $file = $request->file('image');
         [$width, $height] = getimagesize($file->getRealPath());

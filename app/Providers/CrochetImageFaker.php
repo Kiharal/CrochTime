@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Faker;
+use \App\Faker\CrochetImageProvider as CrochetImageProvider;
 use Illuminate\Support\ServiceProvider;
 use Faker\Generator as FakerGenerator;
 use Faker\Factory as FakerFactory;
@@ -18,7 +18,7 @@ class CrochetImageFaker extends ServiceProvider
         $this->app->singleton(FakerGenerator::class, function () {
             $faker = FakerFactory::create();
 
-            $faker->addProvider(new \App\Faker\CrochetImageProvider($faker));
+            $faker->addProvider(new CrochetImageProvider($faker));
 
             return $faker;
 

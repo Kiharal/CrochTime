@@ -24,14 +24,8 @@
 <body  >
         <div>
         <div>
-            <x-nav-block>
-                <x-nav-link href="#">Check yarn</x-nav-link>
-                <x-nav-link href="#">Check sent orders</x-nav-link>
-                <x-nav-link href="#">Add new Item</x-nav-link>
-                <form method="#" action="POST" class="create">
-                    <button >Set working time</button>
-                </form>
-            </x-nav-block>
+            <!-- Placed navigation for owner in owner view page-->
+            {{ $nav }}
             
         </div>
         <div class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">

@@ -20,7 +20,7 @@ class ItemFactory extends Factory
      */
     public function definition(int $width=400, int $height=400): array
     {
-        $filename = $this->faker->imageUrl(800, 600);
+        $filename = fake()->image();
 
         
         return [
@@ -29,6 +29,7 @@ class ItemFactory extends Factory
             'image_path' => $filename,
             'image_width' => $width,
             'image_height' => $height,
+            'item_name' => $this->faker->word,
         ];
     }
 }

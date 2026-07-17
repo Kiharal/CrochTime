@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use League\CommonMark\Extension\DescriptionList\Node\Description;
 
 class StoreItemRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class StoreItemRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user() !== null;
+        return true;
     }
 
     /**
@@ -28,7 +29,9 @@ class StoreItemRequest extends FormRequest
                 'image',
                 'mimes:jpeg,png,jpg,webp,svg',
                 'max:5120',
-                'dimensions:max_width=2000px,max_height=2000px'
+            ],
+            'description' => [
+                'max:1000',
             ],
         ];
     }
