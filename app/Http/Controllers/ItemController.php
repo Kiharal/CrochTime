@@ -12,7 +12,7 @@ class ItemController extends Controller
 {
     //Customer side
     public function index(){
-        $items = Item::with('user:id,name')
+        $items = Item::with('user:id,name,role')
                 ->latest()
                 ->get();
 
