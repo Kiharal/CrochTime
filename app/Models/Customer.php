@@ -11,10 +11,9 @@ class Customer extends Model
     /** @use HasFactory<\Database\Factories\CustomerFactory> */
     use HasFactory;
 
-    #To implement order side functions
-/*  
-    function orders(){
+ 
+    public function order(){
         return $this->hasMany(Order::class);
     }
- */
+
 }

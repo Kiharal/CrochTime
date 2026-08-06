@@ -54,6 +54,7 @@ html body{
 
 .nav-items:hover {
     background-color: #0096b7;
+    cursor: pointer;
 }
 .create  {
     font-family: lora, serif;
