@@ -129,7 +129,6 @@
                 items.get(item).removeItem();
                 
               }
-              items.forEach((value, key) => console.log(value))
               if(items.has(item)){
                 rmvBtn.closest('article').querySelector('#item_count').innerHTML = items.get(item).quantity;
               }
