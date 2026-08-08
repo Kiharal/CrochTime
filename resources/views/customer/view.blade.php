@@ -9,15 +9,29 @@
         <!-- Must have a cart to redirect to current orders -->
         <div class="mx-auto max-w-2xl lg:mx-0">
             <h2 class="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">USER BLOG PAGE BANNER</h2>
-            <p class="mt-2 text-lg/8 text-gray-600">Learn how to grow your business with our expert advice.</p>
+            
         </div>
     
-    <div class="bg-white py-24 sm:py-32">
+    <div class="bg-white py-24 sm:py-32 ">
 
     <?php 
-      $counter = 1  
+      $counter = 1 ;
+      $cart_id = 1; 
     ?>
+    
+    <script>
+      function CartRecord(itemID, quantity=0){
+        this.itemID = itemID;
+        this.cartID = {{ $cart_id }};
+        this.quantity = quantity;
+        this.addItem = ()  => this.quantity++;
+        this.removeItem = () => this.quantity--;
+      }
+      
+      let items = new Map();
 
+      
+    </script>
     <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-2">
       @foreach ($items as $item)
         <article class="flex max-w-xl border-r border-b border-gray-300 m-10 flex-col items-start justify-between">
@@ -52,15 +66,79 @@
             <p class="text-gray-600">{{ $item->user->role }}</p>
           </div>
         </div>
-        <div class="flex items-center gap-x-4 text-s">
+        <div class="flex items-center gap-x-2 text-s">
           <!--Should be a heart shape, change to red when liked, tied to customer and owner-->
           <x-customer-button>Like</x-customer-button>
           <x-customer-button>Reviews</x-customer-button>
-          <x-customer-button>Add to cart</x-customer-button>
+          <x-customer-button class="w-62 inline">
+
+              <button class="inline p-2 hover:bg-red-500 rounded-full" id="removed" data-item="{{ $item->id }}">  
+                  <x-heroicon-o-minus-circle class="inline w-6 h-6"/>
+              </button>
+            <p class="inline">Add to cart</p>
+            <p class="inline p-3 text-white rounded-full bg-gray-200" id="item_count"></p>
+
+            <button class="inline p-2 hover:bg-green-500 hover:text-white rounded-full" id="added" data-item="{{ $item->id }}">
+                <x-heroicon-o-plus-circle class="inline w-6 h-6"/>
+            </button>
+            
+          </x-customer-button>
           <!-- with plus image ahead -->
         </div>
       </article>
       @endforeach
+      
     </div>
+    <!-- Displayed only when data is added in the hidden list below -->
+    <x-customer-button id="checkout" class="sticky bottom-20 bg-green-700 text-white flex justify-center" href="#">Checkout</x-customer-button>
+        <script>
+          //determine if remove button is visible
+          /*document.closest('removed').display ='none';*/
+          //determine if delete button is visible
+          
+          //add and remove items to cart
+          document.addEventListener('click', function (event){
+          {
+            //IF go to cart(Checkout) button is visible
+            const checkoutBtn = document.getElementById('checkout');
+            checkoutBtn.classList.toggle('hidden', items.size === 0);
+            //To add an item
+            const addBtn = event.target.closest('#added');
+            if(addBtn){
+              let item = addBtn.dataset.item;
+              
+              if(!items.has(item)){ 
+                items.set(item, new CartRecord(item));
+              }
+              items.get(item).addItem();
 
+              addBtn.closest('article').querySelector('#item_count').innerHTML = items.get(item).quantity;
+              addBtn.closest('article').querySelector('#item_count').classList.toggle('bg-yellow-600', items.has(item));
+              return;
+            }
+            //To remove an item
+            const rmvBtn = event.target.closest('#removed');
+            if (rmvBtn){
+              let item = rmvBtn.dataset.item;
+              if(items.has(item) && items.get(item).quantity == 1){
+                items.delete(item);
+                
+              }
+              
+              if(items.has(item) && items.get(item).quantity > 0){
+                items.get(item).removeItem();
+                
+              }
+              items.forEach((value, key) => console.log(value))
+              if(items.has(item)){
+                rmvBtn.closest('article').querySelector('#item_count').innerHTML = items.get(item).quantity;
+              }
+              else{
+                rmvBtn.closest('article').querySelector('#item_count').innerHTML = 0;
+              }
+            }
+          }
+
+          })
+        </script>
 </x-layout>

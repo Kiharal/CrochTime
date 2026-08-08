@@ -136,7 +136,18 @@ html body{
     height: 70%;
     background-color: #ccc;
 }
+.checkout {
+    position: sticky;
+    bottom: 20px;
+    background-color: #008000;
+    color: white;
+    text-align: center;
+    /*sticky bottom-20 bg-green-700 text-white flex justify-center*/
+}
 
+.hidden {
+    display: none;
+}
 .post {
     background-color: #ccc;
     padding: 30px;

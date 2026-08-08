@@ -1,5 +1,5 @@
-<p>
-    <a {{ $attributes->merge(['class'=>'nav-items']) }}>
+<li class="nav-items">
+    <a {{ $attributes }}>
             {{ $slot }}
     </a>
-</p>
+</li>
