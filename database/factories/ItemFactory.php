@@ -26,6 +26,7 @@ class ItemFactory extends Factory
         return [
             'user_id' => User::factory(),
             'description' => fake()->text(500),
+            'price' => 10000,
             'image_path' => $filename,
             'image_width' => $width,
             'image_height' => $height,

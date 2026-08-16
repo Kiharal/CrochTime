@@ -11,6 +11,17 @@ class Order extends Model
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'cart_id',
+        'location',
+        'payment',
+        'condition',
+        'subtotal',
+        'service',
+        'delivery',
+        'grandtotal',
+    ];
+
     function task(){
         return $this->belongsTo(Task::class);
     }

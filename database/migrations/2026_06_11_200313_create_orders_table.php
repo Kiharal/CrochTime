@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('location');
             $table->string('payment');
             $table->string('condition');
-            $table->string('subtotal');
-            $table->string('service');
+            $table->integer('subtotal');
+            $table->integer('service');
             $table->string('delivery');
-            $table->string('grandtotal');
+            $table->integer('grandtotal');
             $table->timestamps();
         });
     }

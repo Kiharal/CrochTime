@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->string("item_name");
             $table->longText("description");
+            $table->integer('price');
             $table->string("image_path")->nullable();
             $table->unsignedBigInteger("image_height");
             $table->unsignedBigInteger("image_width");

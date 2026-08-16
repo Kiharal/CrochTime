@@ -19,22 +19,9 @@
       $cart_id = 1; 
     ?>
     
-    <script>
-      function CartRecord(itemID, quantity=0){
-        this.itemID = itemID;
-        this.cartID = {{ $cart_id }};
-        this.quantity = quantity;
-        this.addItem = ()  => this.quantity++;
-        this.removeItem = () => this.quantity--;
-      }
-      
-      let items = new Map();
-
-      
-    </script>
     <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-2">
       @foreach ($items as $item)
-        <article class="flex max-w-xl border-r border-b border-gray-300 m-10 flex-col items-start justify-between">
+        <article class="flex max-w-xl border-r border-b border-gray-300 m-10 flex-col items-start justify-between" data-item="{{ $item }}">
         <div class="flex items-center gap-x-4 text-xs">
           <time datetime="2020-03-16" class="text-gray-500">{{ $item->created_at->format('d M, Y') }}</time>
           <a href="#" class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">{{ $item->user->name }}</a>
@@ -72,13 +59,24 @@
           <x-customer-button>Reviews</x-customer-button>
           <x-customer-button class="w-62 inline">
 
-              <button class="inline p-2 hover:bg-red-500 rounded-full" id="removed" data-item="{{ $item->id }}">  
+              <button
+                class="inline p-2 hover:bg-red-500 rounded-full"
+                id="removed"
+                data-url="{{ route('cart.remove') }}"
+                data-item="{{ $item->id }}">
+                  
+                  <!-- Minus sign -->
                   <x-heroicon-o-minus-circle class="inline w-6 h-6"/>
+
               </button>
             <p class="inline">Add to cart</p>
-            <p class="inline p-3 text-white rounded-full bg-gray-200" id="item_count"></p>
+            <p class="inline p-3 text-white rounded-full" id="item_count"></p>
 
-            <button class="inline p-2 hover:bg-green-500 hover:text-white rounded-full" id="added" data-item="{{ $item->id }}">
+            <button 
+              class="inline p-2 hover:bg-green-500 hover:text-white rounded-full"
+              id="added"
+              data-url="{{ route('cart.add') }}"
+              data-item="{{ $item->id }}">
                 <x-heroicon-o-plus-circle class="inline w-6 h-6"/>
             </button>
             
@@ -90,54 +88,10 @@
       
     </div>
     <!-- Displayed only when data is added in the hidden list below -->
-    <x-customer-button id="checkout" class="sticky bottom-20 bg-green-700 text-white flex justify-center" href="#">Checkout</x-customer-button>
-        <script>
-          //determine if remove button is visible
-          /*document.closest('removed').display ='none';*/
-          //determine if delete button is visible
-          
-          //add and remove items to cart
-          document.addEventListener('click', function (event){
-          {
-            //IF go to cart(Checkout) button is visible
-            const checkoutBtn = document.getElementById('checkout');
-            checkoutBtn.classList.toggle('hidden', items.size === 0);
-            //To add an item
-            const addBtn = event.target.closest('#added');
-            if(addBtn){
-              let item = addBtn.dataset.item;
-              
-              if(!items.has(item)){ 
-                items.set(item, new CartRecord(item));
-              }
-              items.get(item).addItem();
+    <x-customer-button id="checkout"
+    class="sticky bottom-20 bg-green-700 text-white flex justify-center" 
+    href="{{ route('cart.show') }}">
+      Checkout
+    </x-customer-button>
 
-              addBtn.closest('article').querySelector('#item_count').innerHTML = items.get(item).quantity;
-              addBtn.closest('article').querySelector('#item_count').classList.toggle('bg-yellow-600', items.has(item));
-              return;
-            }
-            //To remove an item
-            const rmvBtn = event.target.closest('#removed');
-            if (rmvBtn){
-              let item = rmvBtn.dataset.item;
-              if(items.has(item) && items.get(item).quantity == 1){
-                items.delete(item);
-                
-              }
-              
-              if(items.has(item) && items.get(item).quantity > 0){
-                items.get(item).removeItem();
-                
-              }
-              if(items.has(item)){
-                rmvBtn.closest('article').querySelector('#item_count').innerHTML = items.get(item).quantity;
-              }
-              else{
-                rmvBtn.closest('article').querySelector('#item_count').innerHTML = 0;
-              }
-            }
-          }
-
-          })
-        </script>
 </x-layout>
