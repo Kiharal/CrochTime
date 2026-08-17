@@ -69,8 +69,9 @@ document.addEventListener('click', function (event){
         checkoutBtn.classList.toggle('hidden', data['count']);
     } )
 
-    
+    return;
     }
+    
 }
 
 })

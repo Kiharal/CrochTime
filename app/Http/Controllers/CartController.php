@@ -75,4 +75,25 @@ class CartController extends Controller
                 ]);
         }
     }
+
+    public function deleteItem(Request $request){
+        #validate data
+        $request->validate([
+            'item_id' => ['required'],
+            'total' => ['required']
+        ]);
+        #validate id and total
+
+        $id = $request->input('item_id');
+        $total = $request->input('total');
+        $cart = session('cart');
+        $message = $cart[$id]['item_name'] . ' has been deleted sucessfully';
+        $total -= $cart[$id]['price'] * $cart[$id]['qty'];
+        $total = "Total: Ksh. " . number_format($total);
+        unset($cart[$id]);
+        session(['cart' => $cart]);
+        
+        return json_encode(['message' => $message, 'total' => $total, 'change' => true]);
+
+    }
 }
