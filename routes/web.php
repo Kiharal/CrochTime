@@ -14,6 +14,7 @@ Route::get('/feed/{item}/post', [ItemController::class, 'show'])->name('item.sho
 Route::get('/customer/cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('/customer/cart/add', [CartController::class, 'addItem'])->name('cart.add');
 Route::post('/customer/cart/remove', [CartController::class, 'removeItem'])->name('cart.remove');
+Route::post('cart/store/order', [CartController::class, 'store'])->name('cart.store');
 Route::post('/customer/cart/item/del', [CartController::class, 'deleteItem'])->name('cart.delete');
 
 //Owner level routes for posts

@@ -14,7 +14,7 @@ class ItemController extends Controller
     public function index(){
         $items = Item::with('user:id,name,role')
                 ->latest()
-                ->get();
+                ->paginate(14);
 
         return view('customer.view', compact('items'));
     }

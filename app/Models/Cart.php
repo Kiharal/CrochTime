@@ -12,7 +12,7 @@ class Cart extends Model
      /** @use HasFactory<\Database\Factories\cartFactory> */
     use HasFactory;
     protected $fillable = [
-        'cart_name'
+        'status'
     ];
 
     public function item(): BelongsToMany

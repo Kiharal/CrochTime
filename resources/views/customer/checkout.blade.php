@@ -3,11 +3,22 @@
     <x-slot:nav>
         <x-nav-block></x-nav-block>
     </x-slot:nav>
-    <p
-      id = "message"
-      class="w-screen items-center justify-center flex bg-green-400 text-white px-5">
-      <!-- Contains JS live message result -->
-    </p>
+    <div>
+        @if($errors->any())
+        @foreach($errors->all() as $error)
+        <p
+        class="w-screen items-center justify-center flex bg-red-400 text-white px-5">
+          {{ $error }}
+        </p>
+        @endforeach
+        @endif
+        <p
+          id = "message"
+          class="w-screen items-center justify-center flex bg-green-400 text-white px-5">
+          <!-- Contains JS live message result -->
+        </p>
+    </div>
+
       @foreach ($cart as $key => $item)
 <article class="lg:flex lg:items-center lg:justify-between">
     <div class="relative m-5  w-100  inset-0">
@@ -50,13 +61,24 @@
 
     @endforeach
     <footer class="bg-green-700 rounded-full flex w-full items-center justify-between">
-        <div class="text-white text-xl font-bold bottom-20 text-white flex justify-center mx-auto grid max-w-2xl gap-x-8 gap-y-16 border-t p-10">
+      <form
+       method="POST" 
+       action="{{ route('cart.store') }}"
+       class="text-white text-xl font-bold bottom-20 text-white flex justify-center mx-auto grid max-w-2xl gap-x-8 gap-y-16 border-t p-10">
+        @csrf
+        <input type="number" name="subTotal" id="subTotal" class="hidden" value="{{ $total }}">
+
+        <button
+         type="submit"
+         id="order"
+         class="hover:cursor-pointer text-white text-xl font-bold bottom-20 text-white flex justify-center mx-auto grid max-w-2xl gap-x-8 gap-y-16 border-t p-10">
             <h1 id="total" data-total="{{ number_format($total) }}">
                 Total: Ksh. {{ number_format($total) }}
             </h1>
             
                 
-        </div>
+        </button>
+      </form>
     </footer>
     <script>
 
@@ -91,10 +113,13 @@ document.addEventListener('click', event => {
           console.log(data)
           document.getElementById('message').innerHTML = data['message']
           document.getElementById('total').textContent = data['total']
+          document.getElementById('subTotal').value = data['total']
           console.log(data)
       })
       delItem.closest('article').style.display = 'none';
+      return ;
   }
+
 })
     </script>
 

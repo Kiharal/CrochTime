@@ -18,7 +18,22 @@ class cartFactory extends Factory
     public function definition(): array
     {
         return [
-            'cart_name' => fake()->name(),
+            'status' => fake()->name(),
         ];
+    }
+
+    static function status_def()
+    {
+        switch(random_int(1, 3))
+        {
+            case 1:
+                return "Pending";
+            case 2:
+                return "Cancelled";
+            case 3:
+                return "Completed";
+            default:
+                return "Ordered";
+        }
     }
 }

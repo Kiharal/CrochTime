@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Cart_Item;
 use App\Models\Item;
+use App\Models\Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+use Validator;
 use function PHPUnit\Framework\isEmpty;
 
 class CartController extends Controller
 {
     public function show(){
         $cart = session('cart');
-        $grandTotal = 0;
+        $subTotal = 0;
         $total = 0;
 
         //Total for all items
@@ -21,10 +23,11 @@ class CartController extends Controller
             $total = ($item['qty'] ?? 0) * ( $item['price'] ?? 0);
          
             $cart[$item_id]['total'] = $total;
-            $grandTotal += $total;
-
+            $subTotal += $total;
         }
-        return view('customer.checkout', ['cart' => $cart, 'total' =>$grandTotal]);
+        session(['cart' => $cart]);
+
+        return view('customer.checkout', ['cart' => $cart, 'total' =>$subTotal]);
     }
 
 
@@ -95,5 +98,69 @@ class CartController extends Controller
         
         return json_encode(['message' => $message, 'total' => $total, 'change' => true]);
 
+    }
+
+    public function store(Request $request){
+
+        $cart_items = $request->session()->get('cart');
+        $request->validate([
+            'subTotal' => ['required'],
+        ]);
+
+        Validator::make(['cart' => $cart_items], [
+            'cart' => 'required',
+            'cart.*.item_name' => 'required',
+            'cart.*.price' => 'required|integer',
+            'cart.*.qty' =>'required|integer',
+            'cart.*.total' => 'required'
+        ],
+        )->validate();
+
+        //Validate total
+        //The tottal should be equal to the calculated total, otherwise the data entered is false
+        //For future structure, revalidate the session
+        //Confirm validity of subTotal
+            /* if($total != $request->input('subTotal')){
+                    return redirect()->route('cart.show')->with(['message' => 'Discrepancy in totals, please resend. t1: ' . $total . " t2:" . $request->input('subTotal')]);
+            } */
+
+
+        try {
+            DB::transaction(function () use ($cart_items) {
+                $cart = Cart::create([
+                    'status' => 'pending'
+                ]);
+
+                $total = 0 ;
+
+                foreach($cart_items as $id => $item){
+                    Cart_Item::create([
+                        'cart_id' => $cart->id,
+                        'item_id' => $id,
+                        'quantity' => $item['qty']
+                    ]);
+                    $total += $item['qty'] * $item['price'];
+                }
+
+                Order::create([
+                    'cart_id' => $cart->id,
+                    'location' => 'Nairobi',
+                    'payment' => 'mpesa',
+                    'condition' => 'Good',
+                    'subtotal' => $total,
+                    'service' => 75,
+                    'delivery' => 'John',
+                    'grandtotal' => $total + 75 + 100
+                    ]);
+
+            });
+
+        }
+        catch(Throwable $e)
+        {
+            return redirect()->back()->with(['error', ('Error: ' . $e)]);
+        }
+        
+        return redirect()->route('launch')->with(['success' => 'Order placed successfully']);
     }
 }
