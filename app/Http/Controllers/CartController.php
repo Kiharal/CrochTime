@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Cart_Item;
 use App\Models\Item;
 use App\Models\Order;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Validator;
@@ -39,6 +40,7 @@ class CartController extends Controller
             'item_name' => $item->item_name,
             'price' => $item->price,
             'qty' => ($cart[$item->id]['qty'] ?? 0) + 1,
+            'complexity' =>  $item->category->max_time,
         ];
         session(['cart' => $cart]);
         return json_encode([
@@ -133,26 +135,26 @@ class CartController extends Controller
 
                 $total = 0 ;
 
-                foreach($cart_items as $id => $item){
-                    Cart_Item::create([
+                foreach($cart_items as $item_id => $item){
+                    //Determine complexity of task
+
+                    
+                    $cart_item = Cart_Item::create([
                         'cart_id' => $cart->id,
-                        'item_id' => $id,
+                        'item_id' => $item_id,
                         'quantity' => $item['qty']
                     ]);
+                    $task = Task::create([
+                        'cart_item_id' => $cart_item->id,
+                        'total_time' => $item['complexity'] * $item['qty'],
+                        'done' => 0,
+                    ]);
+                    $task->pendingTask();
+
                     $total += $item['qty'] * $item['price'];
                 }
 
-                Order::create([
-                    'cart_id' => $cart->id,
-                    'location' => 'Nairobi',
-                    'payment' => 'mpesa',
-                    'condition' => 'Good',
-                    'subtotal' => $total,
-                    'service' => 75,
-                    'delivery' => 'John',
-                    'grandtotal' => $total + 75 + 100
-                    ]);
-
+                OrderController::store($cart->id, $item, $item_id, $total);
             });
 
         }

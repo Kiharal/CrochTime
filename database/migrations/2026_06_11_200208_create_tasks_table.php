@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Cart_Item;
 use App\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Order::class);
-            $table->string("Status");
-            $table->integer("Workload");
-            $table->integer("Work_done");
+            $table->foreignIdFor(Cart_Item::class, 'cart_item_id');
+            $table->string("Status")->nullable();
+            $table->integer("total_time");
+            $table->integer("done");
             $table->timestamps();
         });
     }

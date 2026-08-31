@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\category;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,6 +20,7 @@ return new class extends Migration
             $table->string("item_name");
             $table->longText("description");
             $table->integer('price');
+            $table->foreignIdFor(category::class);
             $table->string("image_path")->nullable();
             $table->unsignedBigInteger("image_height");
             $table->unsignedBigInteger("image_width");

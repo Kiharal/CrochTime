@@ -17,6 +17,7 @@ class Item extends Model
         'description',
         'item_name',
         'price',
+        'category_id',
         'image_path',
         'image_width',
         'image_height',
@@ -41,5 +42,10 @@ class Item extends Model
     public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(category::class);
     }
 }

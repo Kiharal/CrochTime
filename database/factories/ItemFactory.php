@@ -31,6 +31,7 @@ class ItemFactory extends Factory
             'image_width' => $width,
             'image_height' => $height,
             'item_name' => $this->faker->word,
+            'category_id' => random_int(1, 20),
         ];
     }
 }
