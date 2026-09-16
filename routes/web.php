@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\TableWebhookController;
 use App\Http\Controllers\TaskController;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 
@@ -25,3 +27,12 @@ Route::post('feed/post', [ItemController::class, 'store'])->name('item.store');
 
 //Owner level for task management
 Route::get('/',[TaskController::class, 'index'])->name('task.index');
+
+
+//test
+Route::get('/test', [TaskController::class, 'test']);
+Route::get('/api/setTable', [TaskController::class, 'setTable']);
+
+
+//API shiiii
+Route::post('/callback', TableWebhookController::class)->name('timetable.callback');

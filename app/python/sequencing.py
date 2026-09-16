@@ -1,54 +1,111 @@
-from fastapi import FastAPI, HTTPException, Http
+import hashlib
+import hmac
+import logging
+import config
+ 
+import httpx
+from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, status, Depends
 from pydantic import BaseModel
-from flask import flask,request,jsonify
+from processing import Table
+from model import DatabaseTask
+import uvicorn
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+#From laravel application
+
+class IncomingTasks(BaseModel):
+    request_id: int
+    callback_url: str
+    max_time: int
+    laravel_tasks: list[DatabaseTask]
+
+
+#from processing in python application(table creation, processing.py)
+class ProcessedTask(BaseModel):
+    id: int
+    time: int
+
+class CreatedTable(BaseModel):
+    frontier: list[ProcessedTask]
+    extra: list[ProcessedTask]
+
+class WebhookResult(BaseModel):
+    request_id: int
+    status: str
+    items: CreatedTable | None = None
+    error: str | None = None
+
 
 app = FastAPI()
-class  taskItem:
-    id: int
-    order_id: int
-    Status: str
-    Workload: int
-    Work_done: int
-    def __init__(self, id, order_id, Status, Workload, Work_Done):
-        self.id = id
-        self.order_id = order_id
-        self.Status = Status
-        self.Workload = Workload
-        self.Work_Done = Work_Done
-            
-        
-
-class taskSequence(taskItem):
-    arr: list[taskItem]
-    def __init__(self):
-        self.arr = []
-    def add(self, item: taskItem):
-        self.arr.append(item)
+def sign_tables(body):
+    return hmac.new(
+        config.WEBHOOK_SECRET.encode('utf-8'),
+        body,
+        hashlib.sha256
+    ).hexdigest()
 
 
-import heapq
-def create(req: taskSequence):
-    heap = []
-    for item in req.arr:
-        heap.append(item.Workload * -1)
+def verify_api_key(Authorization: str = Header("")):
+    expected = f"Bearer {config.WEBHOOK_SECRET}"
+
+    if not hmac.compare_digest(Authorization, expected):
+        raise HTTPException(
+            status_code=401,
+            detail="failed API KEY"
+        )
+
+@app.post('/createTable',
+          dependencies=[Depends(verify_api_key)])
+async def receive_data(requestTasks: IncomingTasks, background_tasks: BackgroundTasks):
+    print(requestTasks)
+    if not requestTasks.laravel_tasks:
+        raise HTTPException(
+            status_code=422,
+            detail="Must provide at least one task",
+            header={'x_Error': "true"}
+        )
+
+    else:
+        #Run task
+        background_tasks.add_task(run_job, requestTasks)
+
+async def run_job(requestTasks: IncomingTasks)->None:
+    result = WebhookResult(request_id=requestTasks.request_id, status="completed")
+
+    try:
+    #Set table
+        EmptyTable = Table(max_time=requestTasks.max_time)
+        main_table, extra_table = EmptyTable.createTable(requestTasks.laravel_tasks)
+        print(main_table, extra_table)
+        result.items = CreatedTable(frontier=main_table, extra=extra_table)
+        result.error = None
+    except Exception as exc:
+        logger.exception(f'Failed to perform main processing {result.request_id}')
+        result.status = 'failed'
+        result.error = str(exc)
+
     
-    heapq.heapify(heap)
-    #store
-    print(heap)
+    body = result.model_dump_json().encode('utf-8')
+    headers = {"X-Signature": sign_tables(body),"Content-Type": "application/json"}
+    result.error = None
 
-def retrieve(req: Http):
-    pass
-
-p1 = taskItem(1, 1, "pending", 10, 2)
-p2 = taskItem(2, 3, "pending", 16, 2)
-p3 = taskItem(3, 5, "pending", 14, 2)
-
-arr = taskSequence()
-arr.add(p1)
-arr.add(p2)
-arr.add(p3)
-
-create(arr)
+    async with httpx.AsyncClient(timeout=10) as client:
+        try:
+            response = await client.post(requestTasks.callback_url, content=body, headers=headers)
+            response.raise_for_status()
+            
+        except httpx.HTTPError:
+            logger.exception(f'failed To deliver request {requestTasks.request_id}')
 
 
+
+@app.get('/health')
+async def health():
+    return {"status": "ok"}
+
+
+if __name__ == "__main__":
+    uvicorn.run("sequencing:app", host="127.0.0.1", port=5005, reload=True)
 

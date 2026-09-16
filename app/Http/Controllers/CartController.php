@@ -7,6 +7,8 @@ use App\Models\Cart_Item;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Task;
+use DateInterval;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Validator;
@@ -134,6 +136,8 @@ class CartController extends Controller
                 ]);
 
                 $total = 0 ;
+                $max_time = 0;
+                $priority_days = 4;
 
                 foreach($cart_items as $item_id => $item){
                     //Determine complexity of task
@@ -149,12 +153,31 @@ class CartController extends Controller
                         'total_time' => $item['complexity'] * $item['qty'],
                         'done' => 0,
                     ]);
-                    $task->pendingTask();
+                    $task->markPending();
+
+                    $max_time = max($task->total_time, $max_time);
 
                     $total += $item['qty'] * $item['price'];
                 }
+                $due_date = new DateTime();
+                $due_date->add(new DateInterval("PT{$max_time}H"));
+                $due_date->add(new DateInterval("P{$priority_days}D"));
 
-                OrderController::store($cart->id, $item, $item_id, $total);
+                $order = Order::create([
+                    'cart_id' => $cart->id,
+                    'location' => 'Nairobi',
+                    'payment' => 'mpesa',
+                    'condition' => 'Good',
+                    'subtotal' => $total,
+                    'service' => 75,
+                    'due_date' => $due_date,
+                    'priority_days' => $priority_days,
+                    'delivery' => 'John',
+                    'grandtotal' => $total + 75 + 100
+                    ]);
+                
+                $cart->update(['order_id' => $order->id]);
+
             });
 
         }

@@ -12,13 +12,15 @@ class Cart extends Model
      /** @use HasFactory<\Database\Factories\cartFactory> */
     use HasFactory;
     protected $fillable = [
-        'status'
+        'status',
+        'order_id'
     ];
 
     public function item(): BelongsToMany
     {
         return $this->belongsToMany(Item::class);
     }
+
 
     public function order(): BelongsTo
     {

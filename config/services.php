@@ -35,8 +35,12 @@ return [
         ],
     ],
 
-    'ml' => [
-        'url' => env('ML_SERVICE_URL', 'http://localhost:8001'),
+    'python' => [
+        'url' => env('ML_SERVICE_URL', 'http://localhost:5005'),
+    ],
+
+    'secrets' => [
+        'webhook' => env('WEBHOOK_SECRET'),
     ],
 
 ];

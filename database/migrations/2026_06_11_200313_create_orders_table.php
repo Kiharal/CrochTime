@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('payment');
             $table->string('condition');
             $table->integer('subtotal');
+            $table->date('due_date');
+            $table->integer('priority_days');
             $table->integer('service');
             $table->string('delivery');
             $table->integer('grandtotal');

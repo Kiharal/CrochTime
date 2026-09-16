@@ -16,11 +16,16 @@ class Order extends Model
         'location',
         'payment',
         'condition',
+        'due_date',
         'subtotal',
         'service',
         'delivery',
         'grandtotal',
+        'priority_days',
     ];
+
+
+    protected $cast = ['due_date' => 'datetime'];
 
     function task(){
         return $this->belongsTo(Task::class);
