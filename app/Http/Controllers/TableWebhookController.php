@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Broadcasting\viewTimetableChannel;
+use App\Events\ShowTable;
 use App\Models\Task;
+use App\Models\Timetable;
 use App\Models\Timetable_task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -56,9 +59,19 @@ class TableWebhookController extends Controller
         catch(Throwable $e){
             Log::info('Timtetable insertion failure.', ['data' => $e]);
         }
-        
 
-
+        $timetable = Timetable::findOrFail($request_id);
+        if($timetable->status == 'completed'){
+            return response()->json(['message' => 'Table alredy processed']);
+        }
+        else if($timetable->status == 'failed'){
+            return response()->json(['message' => 'Timetable failed to process']);
+        }
+        else if($timetable->status == 'processing'){
+            $timetable->markCompleted();
+            broadcast(new ShowTable($timetable));
+        }
+        return response()->json(['message' => 'Seen','status' => $timetable->status]);
         
     }
 

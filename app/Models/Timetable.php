@@ -28,6 +28,7 @@ class Timetable extends Model
     public function markFailed()
     {
         $this->update(['status' => 'failed']);
+        return ['message' => 'Process failed'];
     }
     public function markPending()
     {

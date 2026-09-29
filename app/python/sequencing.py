@@ -95,6 +95,7 @@ async def run_job(requestTasks: IncomingTasks)->None:
         try:
             response = await client.post(requestTasks.callback_url, content=body, headers=headers)
             response.raise_for_status()
+            print(response.json())
             
         except httpx.HTTPError:
             logger.exception(f'failed To deliver request {requestTasks.request_id}')

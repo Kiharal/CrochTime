@@ -22,13 +22,7 @@ public function __construct()
 
 public function submit(Timetable $tableRequest,$tasks)
 {
-    $body = [
-        'request_id' => $tableRequest->id,
-        'callback_url' => app('url'),
-        'max_time' => $tableRequest->max_time,
-        'laravel_tasks' => $tasks
-    
-    ];
+    $tableRequest->markProcessing();
     
     $response = Http::baseUrl($this->baseUrl)
     ->withToken($this->bearerToken)

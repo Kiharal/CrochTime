@@ -32,6 +32,7 @@ Route::get('/',[TaskController::class, 'index'])->name('task.index');
 //test
 Route::get('/test', [TaskController::class, 'test']);
 Route::get('/api/setTable', [TaskController::class, 'setTable']);
+Route::get('/timetable/{id}', [TaskController::class, 'viewTable'])->name('viewTable');
 
 
 //API shiiii
