@@ -37,3 +37,6 @@ Route::get('/timetable/{id}', [TaskController::class, 'viewTable'])->name('viewT
 
 //API shiiii
 Route::post('/callback', TableWebhookController::class)->name('timetable.callback');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

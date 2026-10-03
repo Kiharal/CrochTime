@@ -28,7 +28,11 @@ class ItemController extends Controller
     public function store(StoreItemRequest $request){
         //Validations done in custom Sytroe Item request obvi
         $user = Auth::user() ? Auth::id() : 1;
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'item_name'=>'required',
+            'image'=>'required',
+            'description'=>'required'
+        ]);
 
         $file = $request->file('image');
         try {
