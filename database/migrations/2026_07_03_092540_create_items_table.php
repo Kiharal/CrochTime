@@ -24,7 +24,10 @@ return new class extends Migration
             $table->string("image_path")->nullable();
             $table->unsignedBigInteger("image_height");
             $table->unsignedBigInteger("image_width");
-
+            $table->string('colour');
+            $table->integer('waist');
+            $table->integer('length');
+            $table->integer('chest');
             $table->timestamps();
         });
     }

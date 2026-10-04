@@ -22,6 +22,9 @@ class Item extends Model
         'image_path',
         'image_width',
         'image_height',
+        'waist',
+        'length',
+        'chest',
         'user_id',
     ];
 
