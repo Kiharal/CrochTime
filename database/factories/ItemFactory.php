@@ -20,7 +20,7 @@ class ItemFactory extends Factory
      */
     public function definition(int $width=400, int $height=400): array
     {
-        $filename = fake()->image();
+        $filename = 'img';
 
         
         return [
@@ -30,8 +30,12 @@ class ItemFactory extends Factory
             'image_path' => $filename,
             'image_width' => $width,
             'image_height' => $height,
+            'waist' => 30,
+            'length' => 30,
+            'chest' => 30,
             'item_name' => $this->faker->word,
             'category_id' => random_int(1, 20),
+            'color_item_id' => random_int(1, 48)
         ];
     }
 }

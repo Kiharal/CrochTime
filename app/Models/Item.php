@@ -22,6 +22,7 @@ class Item extends Model
         'image_path',
         'image_width',
         'image_height',
+        'color_item_id',
         'waist',
         'length',
         'chest',

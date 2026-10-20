@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreItemRequest;
+use App\Models\color_item;
 use App\Models\Item;
 use App\Models\User;
 use Auth;
@@ -21,7 +22,8 @@ class ItemController extends Controller
 
     //Owner Side
     public function create(){
-        return view('owner.create');
+        $colours = color_item::all()->where('is_active', '=', true);
+        return view('owner.create', compact('colours'));
     }
 
     //Owner side

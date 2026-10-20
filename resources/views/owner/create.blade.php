@@ -21,7 +21,29 @@
                     <x-form-input id="item_name" type="text" name="item_name" ></x-form-input>
 
                 </x-form_element>
+                
+                <x-form_element errors="colours">
+                    <x-form-label for="colour-trigger">Select colours</x-form-label>
+
+                    <details class="relative mt-2" id="colour-dropdown">
+                        <summary id="colour-trigger"
+                                 class="flex cursor-pointer list-none items-center justify-between rounded-md bg-white px-3 py-2 text-sm
+                                        outline-1 -outline-offset-1 outline-gray-300 [&::-webkit-details-marker]:hidden">
+                            <span><span id="colour-count">0</span> / 10 selected</span>
+                            <span aria-hidden="true">▾</span>
+                        </summary>
                     
+                        <div class="absolute left-0 right-0 z-20 mt-1 max-h-72 overflow-y-auto rounded-md border bg-white p-2 shadow-lg">
+                            <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                @foreach ($colours as $colour)
+                                    <x-form-input size="checkbox" :colour="$colour"
+                                                     :checked="in_array($colour->id, old('colours', []))" />
+                                @endforeach
+                            </div>
+                        </div>
+                    </details>
+                </x-form_element>
+
                 <x-form_element errors="description">
                     <x-form-label for="description">Description</x-form-label>
                     <!-- JS for required -->
@@ -37,4 +59,28 @@
         </div>
         </x-form>
     </div>
+    <script>
+    const MAX = 10;
+    const dropdown = document.getElementById('colour-dropdown');
+    const boxes = [...document.querySelectorAll('.colour-checkbox')];
+    const counter = document.getElementById('colour-count');
+    const postBtn = document.getElementById('post-btn'); // add this id to your submit button
+
+    function refresh() {
+        const n = boxes.filter(b => b.checked).length;
+        counter.textContent = n;
+        boxes.forEach(b => { if (!b.checked) b.disabled = n >= MAX; });
+        postBtn.disabled = n < 1;
+    }
+    boxes.forEach(b => b.addEventListener('change', refresh));
+    refresh();
+
+    // close on outside click or Escape
+    document.addEventListener('click', e => {
+        if (dropdown.open && !dropdown.contains(e.target)) dropdown.open = false;
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') dropdown.open = false;
+    });
+</script>
 </x-layout>
