@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('products');
             $table->integer('min_time');
             $table->integer('max_time');
+            $table->boolean('is_active');
         });
     }
 

@@ -43,6 +43,25 @@
                         </div>
                     </details>
                 </x-form_element>
+                <x-form_element>
+                <details class="relative mt-2">
+                        <summary 
+                                 class="flex cursor-pointer list-none items-center justify-between rounded-md bg-white px-3 py-2 text-sm
+                                        outline-1 -outline-offset-1 outline-gray-300 [&::-webkit-details-marker]:hidden">
+                            
+                            <span aria-hidden="true">▾</span>
+                        </summary>
+                    
+                        <div class="absolute left-0 right-0 z-20 mt-1 max-h-72 overflow-y-auto rounded-md border bg-white p-2 shadow-lg">
+                            <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                @foreach ($categories as $category)
+                                    <x-form-input size="radio" :category="$category"
+                                    />
+                                @endforeach
+                            </div>
+                        </div>
+                    </details>
+                </x-form_element>
 
                 <x-form_element errors="description">
                     <x-form-label for="description">Description</x-form-label>

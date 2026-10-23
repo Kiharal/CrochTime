@@ -16,4 +16,8 @@ class color_item extends Model
         'hex',
         'is_active',
     ];
+
+    protected $casts = [
+        'is_active' => 'boolean'
+    ];
 }

@@ -11,9 +11,15 @@ class category extends Model
         'category',
         'min_time',
         'max_time',
-        'products'
+        'products',
+        'is_active',
+
     ];
     public $timestamps = false;
+
+    protected $casts = [
+        'is_active' => 'boolean'
+    ];
 
     public function item(): HasMany
     {

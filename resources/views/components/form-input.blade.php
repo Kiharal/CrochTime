@@ -1,4 +1,4 @@
-@props(['size' => 'input', 'colour' => 'white', 'checked' => false])
+@props(['size' => 'input', 'colour' => 'white', 'checked' => false, 'category' => "cloth"])
 <div class="mt-2">
     @if ($size == 'input')
     <input required {{ $attributes->merge(['class'=>'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6']) }}
@@ -31,7 +31,16 @@
                   d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.8 3.8 6.8-6.8a1 1 0 0 1 1.4 0z"/>
         </svg>
     @endif
-
+    @if ($size == 'radio')
+    <input
+        type="radio"
+        value="{{ $category->id }}"
+        name="category"
+        class="w-8 h-8 rounded-md bg-white-100 border-black-100 bg-white py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300"
+    >{{ $category->category }}
+    
+    
+    @endif
     @if ($size == 'textarea')
     <textarea id="description"
                     required

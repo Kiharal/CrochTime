@@ -35,7 +35,6 @@ class ItemFactory extends Factory
             'chest' => 30,
             'item_name' => $this->faker->word,
             'category_id' => random_int(1, 20),
-            'color_item_id' => random_int(1, 48)
         ];
     }
 }

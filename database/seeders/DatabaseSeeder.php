@@ -39,14 +39,15 @@ class DatabaseSeeder extends Seeder
         $header = array_map('trim', array_shift($rows));
         $header = array_map('strtolower', $header);
 
-        foreach($rows as $i => $row){
+        foreach($rows as $_ => $row){
             //Skip the first row: headers(to avaoid any form of discrepancy)
             $data = array_combine($header, $row);
             category::create([
                 'category' => $data['category'],
                 'min_time' => $data['min'],
                 'max_time' => $data['max'],
-                'products' => $data['examples']
+                'products' => $data['examples'],
+                'is_active' => $data['is_active']
             ]);
         }
 

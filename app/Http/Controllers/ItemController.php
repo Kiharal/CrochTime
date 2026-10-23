@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreItemRequest;
+use App\Models\category;
 use App\Models\color_item;
 use App\Models\Item;
 use App\Models\User;
 use Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class ItemController extends Controller
 {
@@ -23,39 +27,52 @@ class ItemController extends Controller
     //Owner Side
     public function create(){
         $colours = color_item::all()->where('is_active', '=', true);
-        return view('owner.create', compact('colours'));
+        $categories = category::all()->where('is_active','=', true);
+        return view('owner.create', compact('colours', 'categories'));
     }
 
     //Owner side
     public function store(StoreItemRequest $request){
         //Validations done in custom Sytroe Item request obvi
+        
         $user = Auth::user() ? Auth::id() : 1;
         $validated = $request->validate([
             'item_name'=>'required',
-            'image'=>'required',
-            'description'=>'required'
+            'colours' => 'required|array|min:1|max:10|',
+            'colours.*' => 'integer',
+            'category' => 'required|integer',
+            'image'=>'required|image',
+            'description'=>'required|min:3|max:300'
         ]);
 
+        
         $file = $request->file('image');
-        try {
-            [$width, $height] = getimagesize($file->getRealPath());
-        }
-        catch(Exception){
-            $width = 0;
-            $height = 0;
+        DB::transaction(function () use ($validated, $file, $user) {
+            try {
+                [$width, $height] = getimagesize($file->getRealPath());
+            }
+            catch(Exception){
+                $width = 0;
+                $height = 0;
 
-        }
-        $path = $file->store('image', 'public');
+            }
+            $filename = Storage::disk('public')->put('/posts', $file);
+        
+            Item::create([
+                'description' => $validated['description'],
+                'item_name' => $validated['item_name'],
+                'image_path' => $filename,
+                'category_id' => $validated['category'],
+                'image_height' => $height,
+                'price' => 30000,
+                'waist' => 20,
+                'length' => 20,
+                'chest' => 20,
+                'image_width' => $width,
+                'user_id' => $user
+            ]);
 
-        Item::create([
-            'description' => $validated['description'],
-            'item_name' => $validated['item_name'],
-            'image_path' => $path,
-            'image_height' => $height,
-            'image_width' => $width,
-            'user_id' => $user
-        ]);
-
+        });
         return redirect()->route('launch')->with('message', 'Posted!');
     }
 

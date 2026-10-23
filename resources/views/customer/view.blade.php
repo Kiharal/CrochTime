@@ -28,8 +28,14 @@
         </div>
         <div class="group relative grow flex lg:grid-cols-2">
           <div class="relative m-5  w-full  inset-0">
-            <img src="https://imgs.search.brave.com/zjyoitHvOa_XmH1Mcd5_pRL6rXlsXrelXGvAa1mAYyk/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuc3F1YXJlc3Bh/Y2UtY2RuLmNvbS9j/b250ZW50L3YxLzYy/ZmU5NTcyMTQ3ZTA3/MTdhNGQ3NGIwNC81/ZDFhMWIwOC1iNDUw/LTQyZmUtYjRiNS0w/M2NhMzBiZGFlODIv/YmVzdHNlbGxpbmcr/Y3JvY2hldCtwcm9k/dWN0cytvbitldHN5/KzgwMC5wbmc" 
-            class="w-70 h-40 rounded-md flex-shrink-0">
+            @if(asset($item->image_path))
+                <img src="{{  asset('storage/'.$item->image_path) }}" alt="{{ $item->image_width }}">
+            @else
+            
+                <img src="https://imgs.search.brave.com/zjyoitHvOa_XmH1Mcd5_pRL6rXlsXrelXGvAa1mAYyk/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuc3F1YXJlc3Bh/Y2UtY2RuLmNvbS9j/b250ZW50L3YxLzYy/ZmU5NTcyMTQ3ZTA3/MTdhNGQ3NGIwNC81/ZDFhMWIwOC1iNDUw/LTQyZmUtYjRiNS0w/M2NhMzBiZGFlODIv/YmVzdHNlbGxpbmcr/Y3JvY2hldCtwcm9k/dWN0cytvbitldHN5/KzgwMC5wbmc"
+                class="w-70 h-40 rounded-md flex-shrink-0">
+            @endif
+            
           </div>
           <div class="text-wrap w-100">
             <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">

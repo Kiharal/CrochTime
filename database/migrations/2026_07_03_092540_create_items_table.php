@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string("image_path")->nullable();
             $table->unsignedBigInteger("image_height");
             $table->unsignedBigInteger("image_width");
-            $table->foreignIdFor(color_item::class);
             $table->integer('waist');
             $table->integer('length');
             $table->integer('chest');
