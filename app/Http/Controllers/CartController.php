@@ -43,6 +43,7 @@ class CartController extends Controller
             'price' => $item->price,
             'qty' => ($cart[$item->id]['qty'] ?? 0) + 1,
             'complexity' =>  $item->category->max_time,
+            'image_path' => $item->image_path,
         ];
         session(['cart' => $cart]);
         return json_encode([

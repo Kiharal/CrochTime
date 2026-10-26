@@ -13,6 +13,8 @@ class category extends Model
         'max_time',
         'products',
         'is_active',
+        'min_price',
+        'max_price'
 
     ];
     public $timestamps = false;

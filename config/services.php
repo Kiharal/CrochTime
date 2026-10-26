@@ -43,4 +43,10 @@ return [
         'webhook' => env('WEBHOOK_SECRET'),
     ],
 
+    'unsplash' => [
+        'app_name' => env('APP_NAME'),
+        'access' => env('UNSPLASH_ACCESS_KEY'),
+        'secret' => env('UNSPLASH_SECRET_KEY'),
+    ],
+
 ];

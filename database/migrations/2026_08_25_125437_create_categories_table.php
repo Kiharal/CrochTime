@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('min_time');
             $table->integer('max_time');
             $table->boolean('is_active');
+            $table->float('min_price');
+            $table->float('max_price');
         });
     }
 

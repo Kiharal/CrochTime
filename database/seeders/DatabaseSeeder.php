@@ -47,7 +47,9 @@ class DatabaseSeeder extends Seeder
                 'min_time' => $data['min'],
                 'max_time' => $data['max'],
                 'products' => $data['examples'],
-                'is_active' => $data['is_active']
+                'is_active' => $data['is_active'],
+                'min_price' => 1000.00,
+                'max_price' => 3000.00,
             ]);
         }
 

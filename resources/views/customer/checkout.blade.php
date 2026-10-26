@@ -22,8 +22,14 @@
       @foreach ($cart as $key => $item)
 <article class="lg:flex lg:items-center lg:justify-between">
     <div class="relative m-5  w-100  inset-0">
-        <img src="https://imgs.search.brave.com/zjyoitHvOa_XmH1Mcd5_pRL6rXlsXrelXGvAa1mAYyk/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuc3F1YXJlc3Bh/Y2UtY2RuLmNvbS9j/b250ZW50L3YxLzYy/ZmU5NTcyMTQ3ZTA3/MTdhNGQ3NGIwNC81/ZDFhMWIwOC1iNDUw/LTQyZmUtYjRiNS0w/M2NhMzBiZGFlODIv/YmVzdHNlbGxpbmcr/Y3JvY2hldCtwcm9k/dWN0cytvbitldHN5/KzgwMC5wbmc" 
-        class="w-70 h-40 rounded-md flex-shrink-0">
+        @if(filter_var($item['image_path'], FILTER_VALIDATE_URL))
+          <img src="{{ $item['image_path'] }}" 
+          class="w-70 h-40 rounded-md flex-shrink-0">
+        @else
+          <img src="{{ asset('storage/' . $item['image_path']) }}" 
+          class="w-70 h-40 rounded-md flex-shrink-0">
+        @endif
+
     </div>
   <div class="min-w-0 flex-1">
     <h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">{{ $item['item_name'] }}</h2>

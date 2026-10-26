@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Item;
+use Unsplash\HttpClient;
+use Unsplash\Search;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -18,9 +20,29 @@ class ItemFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    private int $pages = 1;
+
     public function definition(int $width=400, int $height=400): array
     {
-        $filename = 'img';
+        HttpClient::init([
+            'applicationId' => config('services.unsplash.access'),
+            'secret' => config('services.unsplash.secret'),
+            'callback' => 'callback',
+            'utmSource' => config('services.unsplash.app_name'),
+        ]);
+
+        $search = 'crochet';
+        $pages = $this->pages;
+        $per_page = 1;
+        $orientation = 'landscape';
+
+        $this->pages +=1;
+
+        $payload = Search::photos($search, $pages, $per_page, $orientation);
+        $result = $payload->getResults();
+
+
+        $filename = $result[0]['urls']['small'];
 
         
         return [
