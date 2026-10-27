@@ -28,6 +28,7 @@ return new class extends Migration
             $table->integer('waist');
             $table->integer('length');
             $table->integer('chest');
+            $table->integer('like_count');
             $table->timestamps();
         });
     }

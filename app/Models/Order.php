@@ -22,12 +22,13 @@ class Order extends Model
         'delivery',
         'grandtotal',
         'priority_days',
+        'customer_id',
     ];
 
 
     protected $cast = ['due_date' => 'datetime'];
 
-    function task(){
+    public function task(){
         return $this->belongsTo(Task::class);
     }
 

@@ -7,8 +7,8 @@ use App\Models\category;
 use App\Models\color_item;
 use App\Models\Item;
 use App\Models\User;
-use Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -69,7 +69,8 @@ class ItemController extends Controller
                 'length' => 20,
                 'chest' => 20,
                 'image_width' => $width,
-                'user_id' => $user
+                'user_id' => $user,
+                'like_count' => 0
             ]);
 
         });

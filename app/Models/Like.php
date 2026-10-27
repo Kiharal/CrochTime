@@ -9,11 +9,17 @@ class Like extends Model
 {
     protected $fillable = [
         'item_id',
+        'customer_id',
     ];
 
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
     }
 
 }

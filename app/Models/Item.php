@@ -26,6 +26,7 @@ class Item extends Model
         'length',
         'chest',
         'user_id',
+        'like_count',
     ];
 
     function user()

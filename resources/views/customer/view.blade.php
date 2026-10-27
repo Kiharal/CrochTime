@@ -31,10 +31,13 @@
             @if(!filter_var($item->image_path, FILTER_VALIDATE_URL))
             <!-- View organic customer images, MADE BY MAN -->
             <img src="{{ asset('storage/' . $item->image_path) }}" alt="le_gone"
+            class="h-50 mx-auto object-contain"
             >
             @else
             <!--To check if the image is from unsplash-->
-              <img src="{{ $item->image_path }}" alt="{{ $item->image_path }}">
+              <img src="{{ $item->image_path }}" alt="{{ $item->image_path }}"
+              class="h-50 mx-auto object-contain"              
+              >
             @endif
             
           </div>

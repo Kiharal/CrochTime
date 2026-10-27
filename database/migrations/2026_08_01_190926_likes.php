@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Customer;
 use App\Models\Item;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,14 +16,16 @@ return new class extends Migration
         Schema::create('likes', function (Blueprint $table)
         {
             $table->id();
-            $table->foreignIdFor(Item::class);
+            $table->foreignIdFor(Item::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Customer::class)->constrained();
         });
         Schema::create('reviews', function (Blueprint $table)
         {
             $table->id();
             $table->integer('rating');
             $table->longText('comment');
-            $table->foreignIdFor(Item::class);
+            $table->foreignIdFor(Item::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Customer::class)->constrained();
         });
     }
 

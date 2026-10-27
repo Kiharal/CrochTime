@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cart;
+use App\Models\Customer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->integer('service');
             $table->string('delivery');
             $table->integer('grandtotal');
+            $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
