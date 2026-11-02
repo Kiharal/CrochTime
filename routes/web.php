@@ -42,5 +42,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
+// routes/web.php
+Route::prefix('customer')->name('customer.')->group(base_path('routes/customer-auth.php'));
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

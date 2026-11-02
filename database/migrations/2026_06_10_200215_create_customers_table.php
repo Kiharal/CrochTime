@@ -23,6 +23,13 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        Schema::create('customer_password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('password');
+            $table->timestamp('created_at')->nullable();
+
+        });
     }
 
     /**

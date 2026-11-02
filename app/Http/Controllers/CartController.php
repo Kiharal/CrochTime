@@ -10,6 +10,7 @@ use App\Models\Task;
 use DateInterval;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Validator;
 use function PHPUnit\Framework\isEmpty;
@@ -106,6 +107,13 @@ class CartController extends Controller
     }
 
     public function store(Request $request){
+        if(Auth::guard('customer')->check()){
+            $customer = Auth::guard('customer')->user();
+        }
+        else{
+            #Redirect to customer authentication
+            
+        }
 
         $cart_items = $request->session()->get('cart');
         $request->validate([
