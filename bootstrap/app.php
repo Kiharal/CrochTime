@@ -17,6 +17,21 @@ return Application::configure(basePath: dirname(__DIR__))
             '/callback',
             '/api/setTable'
         ]);
+        $middleware->redirectGuestsTo(function (Request $request){
+            $middlewares = $request->route()?->gatherMiddleware() ?? [];
+
+            return in_array('customer:guest', $middlewares) ?
+                route('customer.login') :
+                route('login');
+        });
+
+        $middleware->redirectUsersTo(function (Request $request){
+            $middlewares = $request->route() ?->gatherMiddleware() ?? [];
+
+            return in_array('customer:auth', $middlewares) ?
+                route('launch') :
+                route('task.index');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

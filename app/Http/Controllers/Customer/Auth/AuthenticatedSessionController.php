@@ -7,7 +7,9 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
+
 
 class AuthenticatedSessionController extends Controller
 {
@@ -18,11 +20,19 @@ class AuthenticatedSessionController extends Controller
 
     public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        $validated = $request->validate([
+            'email' => 'required',
+            'password' => ['required', Rules\Password::default()]
+        ]);
 
-        $request->session()->regenerate();
+        if(Auth::guard('cutomer')->attempt($validated)){
+            $request->session()->regenerate();
+            return redirect()->intended(route('launch'));
+        }
+        throw ValidationException::withMessages(['email' => __('auth_failed')]);
+        
 
-        return redirect()->intended(route('launch'));
+
     }
 
     public function destroy(Request $request): RedirectResponse

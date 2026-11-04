@@ -1,17 +1,14 @@
-<x-customer.guest-layout title="Choose a new password">
-    <h1 class="mb-4 text-xl font-semibold">Choose a new password</h1>
+<x-customer.guest-form method="POST" action="{{ route('customer.password.store') }}" title="Login" >
+    <x-form_element errors="email">
+        <x-form-input name="email" placeholder="Email" size="email" :value="old('email')" required autofocus autocomplete="username" />
+    </x-form_element>
 
-    <form method="POST" action="{{ route('customer.password.store') }}" class="space-y-4">
-        @csrf
+    <x-form_element errors="password">
+        <x-form-input name="password" size="password" required autocomplete="new-password" />
+    </x-form_element>
 
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
-
-        <x-customer.input name="email" label="Email" type="email" :value="$request->email" required autofocus autocomplete="username" />
-        <x-customer.input name="password" label="New password" type="password" required autocomplete="new-password" />
-        <x-customer.input name="password_confirmation" label="Confirm new password" type="password" required autocomplete="new-password" />
-
-        <div class="flex justify-end">
-            <x-customer.button>Save new password</x-customer.button>
-        </div>
-    </form>
-</x-customer.guest-layout>
+    <div class="flex items-center justify-between">
+        <a href="{{ route('customer.register') }}" class="text-sm font-bold text-indigo-600  text-smokey-green hover:underline">No account? Sign up</a>
+        <x-customer.guest-button>Login</x-customer.guest-button>
+    </div>
+</x-customer.guest-form>

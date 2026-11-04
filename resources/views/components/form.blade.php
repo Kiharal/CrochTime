@@ -5,3 +5,6 @@
         {{ $slot }}
     </div>
 </form>
+@push('scripts')
+ @vite(['resources/js/passwordToggle.js'])
+@endpush

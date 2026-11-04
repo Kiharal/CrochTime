@@ -17,7 +17,7 @@ class ItemController extends Controller
 {
     //Customer side
     public function index(){
-        dd(Auth::guard('customer')->user());
+        
         $items = Item::with('user:id,name,role')
                 ->latest()
                 ->paginate(14);

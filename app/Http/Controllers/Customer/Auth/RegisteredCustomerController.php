@@ -28,7 +28,7 @@ class RegisteredCustomerController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.Customer::class],
             'instagram' => 'nullable|string|max:30',
             'phone' => ['required', 'string', 'min:10', 'max:20'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Rules\Password::default()],
         ]);
 
         $customer = Customer::create([

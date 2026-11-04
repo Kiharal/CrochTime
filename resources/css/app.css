@@ -181,3 +181,20 @@ html body{
     height: 80px;
 
 }
+
+.smokey-green {
+    background-color: #78866B;
+}
+
+.hover-smokey-green:hover {
+    background-color: #78866B;
+}
+
+.text-smokey-green {
+    color: #78866B;
+}
+
+.oak-light {
+    background-color: #D2B183;
+}
+
