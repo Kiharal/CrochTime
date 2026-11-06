@@ -7,8 +7,14 @@
         <x-form-input name="password" size="password" required autocomplete="new-password" />
     </x-form_element>
 
-    <div class="flex items-center justify-between">
-        <a href="{{ route('customer.register') }}" class="text-sm font-bold text-indigo-600  text-smokey-green hover:underline">No account? Sign up</a>
+    <div class="grid grid-cols-2 gap-x-4 align-items:center justify-items:center">
+        <div class="grid grid-rows-2">
+            <a href="{{ route('customer.register') }}" class="text-sm font-bold text-indigo-600  text-smokey-green hover:underline">No account? Sign up</a>
+            @error('password')
+                <a href="{{ route('customer.password.request') }}" class="text-sm font-bold text-indigo-600  text-smokey-green hover:underline">Forgot Password?</a>
+    
+            @enderror
+        </div>
         <x-customer.guest-button>Login</x-customer.guest-button>
     </div>
 </x-customer.guest-form>

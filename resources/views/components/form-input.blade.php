@@ -45,15 +45,15 @@
     
     @elseif ($size == 'password')
 
-    <div id="passwordBox" class='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'>
+    <div id="passwordBox" class='block flex w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'>
         <input id="input" type="password" placeholder="Password" required {{ $attributes->merge(['class' => 'm-0 outline-0']) }}
         />
-        <span>
+        <span class="ml-auto">
             <button
             id="viewPass"
             type="button"
             class="hover:cursor-pointer">
-                <x-heroicon-o-eye id="show-seen" class="w-6 h-6"/>
+                <x-heroicon-o-eye id="show-seen" class="w-6 h-6 "/>
                 <x-heroicon-o-eye-slash id="show-hide" class="hidden w-6 h-6"/>
             </button>
         </span>

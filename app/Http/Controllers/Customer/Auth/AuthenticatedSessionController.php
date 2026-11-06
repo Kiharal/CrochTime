@@ -29,8 +29,9 @@ class AuthenticatedSessionController extends Controller
             $request->session()->regenerate();
             return redirect()->intended(route('launch'));
         }
-        throw ValidationException::withMessages(['email' => __('auth_failed')]);
         
+        return redirect()->back()
+        ->withErrors(['email' => __('auth_failed'), 'password' => 'Wrong password'])->withOnly('email');
 
 
     }
