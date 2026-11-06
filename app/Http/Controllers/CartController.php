@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Validator;
-use function PHPUnit\Framework\isEmpty;
 
 class CartController extends Controller
 {
@@ -139,7 +138,7 @@ class CartController extends Controller
 
 
         try {
-            DB::transaction(function () use ($cart_items) {
+            DB::transaction(function () use ($cart_items, $customer) {
                 $cart = Cart::create([
                     'status' => 'pending'
                 ]);
@@ -173,6 +172,7 @@ class CartController extends Controller
                 $due_date->add(new DateInterval("P{$priority_days}D"));
 
                 $order = Order::create([
+                    'customer_id' => $customer->id,
                     'cart_id' => $cart->id,
                     'location' => 'Nairobi',
                     'payment' => 'mpesa',

@@ -81,19 +81,15 @@ html body{
     width: 100%;
 }
 
-.table-container thead th{
-    background-color: #FED9B7;
-    height: 100px;
 
-}
-
-.table-container tr{
+.table-container tbody tr{
     height: 100px;
     padding: 20px;
     background-color: #fff;
     text-align: center;
 
 }
+
 .table-container tr:nth-child(even){
     background-color: #ccc;
 }

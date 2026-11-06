@@ -19,22 +19,13 @@ class Task extends Model
     ];
 
 
-    function cart_item(){
+    public function cartItem(){
         return $this->belongsTo(Cart_Item::class);
     }
 
     public function table(): HasMany
     {
         return $this->hasMany(Timetable_task::class);
-    }
-    public function item()
-    {
-        return $this->cart_item->item();
-    }
-
-    public function category()
-    {
-        return $this->item->category();
     }
 
     public function markTransit(): void

@@ -1,4 +1,5 @@
 <x-layout>
+  <div>
     <x-slot:nav>
         <x-nav-block>
             <x-nav-link>Home</x-nav-link>
@@ -103,5 +104,5 @@
     href="{{ route('cart.show') }}">
       Checkout
     </x-customer-button>
-
+  </div>
 </x-layout>

@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Log;
 class TaskController extends Controller
 {
     public function index(){
-        $tasks = DB::table('tasks')
-                ->select('*',
+        $tasks = Task::select('*',
                         DB::raw('total_time - done AS Work_remaining'))
+                ->with('cartItem.cart.order:id,cart_id,due_date')
                 ->get(10);
+        
         
         return view('owner.view', ["tasks"=>$tasks]);
     }

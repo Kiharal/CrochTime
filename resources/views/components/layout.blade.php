@@ -30,9 +30,9 @@
         
     </div>
     <div  class="dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center">
-        <div>
+        
             {{ $slot }}
-        </div>
+        
     </div>
 </body>
 </html>

@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->string('status');
-            $table->foreignIdFor(Order::class)->nullable();
+            $table->foreignIdFor(Order::class);
             $table->timestamps();
         });
         Schema::create('cart_item', function (Blueprint $table) {

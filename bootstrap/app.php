@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -20,15 +21,15 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(function (Request $request){
             $middlewares = $request->route()?->gatherMiddleware() ?? [];
 
-            return in_array('customer:guest', $middlewares) ?
+            return in_array('guest:customer', $middlewares) ?
                 route('customer.login') :
                 route('login');
         });
 
         $middleware->redirectUsersTo(function (Request $request){
             $middlewares = $request->route() ?->gatherMiddleware() ?? [];
-
-            return in_array('customer:auth', $middlewares) ?
+            dd($middlewares);
+            return in_array('auth:customer', $middlewares) ?
                 route('launch') :
                 route('task.index');
         });

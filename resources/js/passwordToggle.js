@@ -1,13 +1,14 @@
 
-const toggleBtn = document.getElementById('viewPass')
-toggleBtn.addEventListener('click', () => {
+document.addEventListener('click', event => {
+    const toggleBtn = event.target.closest('#viewPass')
 
-    const input = document.getElementById('passwordBox')
-    const hideEye = document.getElementById('show-hide')
-    const showEye = document.getElementById('show-seen')
-    const show = input.type === 'password'
-    console.log(show)
-    input.type = show ? 'text' : 'password'
-    showEye.classList.toggle('hidden', show)
-    hideEye.classList.toggle('hidden', !show)
+    if(toggleBtn){
+        const input = toggleBtn.closest('div').querySelector('#input')
+        const show = input.type === 'password'
+        const showEye = toggleBtn.closest('div').querySelector('#show-seen')
+        const hideEye = toggleBtn.closest('div').querySelector('#show-hide')
+        input.type = show ? 'text' : 'password'
+        showEye.classList.toggle('hidden', show)
+        hideEye.classList.toggle('hidden', !show)
+    }
 })
