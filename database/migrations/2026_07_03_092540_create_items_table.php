@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer('length');
             $table->integer('chest');
             $table->integer('like_count');
+            $table->boolean('is_active');
             $table->timestamps();
         });
     }

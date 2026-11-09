@@ -111,7 +111,7 @@ class CartController extends Controller
         }
         else{
             #Redirect to customer authentication
-            
+            return redirect()->route('customer.login');
         }
 
         $cart_items = $request->session()->get('cart');

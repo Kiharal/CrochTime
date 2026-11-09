@@ -35,7 +35,7 @@ class TaskController extends Controller
         
         $request = Task::select('tasks.id',
                                 DB::raw('(tasks.total_time - tasks.done) as process_time'),
-                                DB::raw('DATEDIFF(orders.due_date, CURDATE())'))
+                                DB::raw('1/DATEDIFF(orders.due_date, CURDATE())'))
                         ->whereIn('tasks.Status', ['pending', 'processing'])
                         ->join('cart_item', 'tasks.cart_item_id', 'cart_item.id', 'inner')
                         ->join('carts', 'cart_item.cart_id', '=', 'carts.id', 'inner')
@@ -48,17 +48,25 @@ class TaskController extends Controller
         //validate user
         //check if value exists
         try{
-            $timetable = Timetable::findOrFail($id);
-            $tasks = $timetable->tasks != null ? $timetable->tasks : $timetable->markFailed();
+            $timetable = Timetable::with('tasks')->findOrFail($id);
+            //Handle lack of tasks
+            $tasks = $timetable->tasks()->exists() ? true : $timetable->markFailed();
+            $current = $timetable->tasks()
+                    ->where('is_extra', false)
+                    ->paginate(10, '*', 'currentPage');
+            
+            $extra = $timetable->tasks()
+                    ->where('is_extra', true)
+                    ->paginate(10, '*', 'extraPage');
 
         }
         catch(ModelNotFoundException $e){
             Log::info("Model doesn't exist", ['error' => $e]);
             return response()->json(['message' => 'This item does not exist, biatch']);
         }
-
+        
         //render values
-        return view('welcome', compact('tasks'));
+        return view('welcome', compact('tasks', 'current', 'extra'));
 
     }
 }

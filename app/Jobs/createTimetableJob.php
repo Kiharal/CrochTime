@@ -34,7 +34,7 @@ class createTimetableJob implements ShouldQueue
     {
         $tasks = Task::select('tasks.id',
                                 DB::raw('(tasks.total_time - tasks.done) as process_time'),
-                                DB::raw('DATEDIFF(orders.due_date, CURDATE()) as complexity'))
+                                DB::raw('1/DATEDIFF(orders.due_date, CURDATE()) as complexity'))
                         ->whereIn('tasks.Status', ['pending', 'processing'])
                         ->join('cart_item', 'tasks.cart_item_id', 'cart_item.id', 'inner')
                         ->join('carts', 'cart_item.cart_id', '=', 'carts.id', 'inner')

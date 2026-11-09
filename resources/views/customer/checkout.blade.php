@@ -1,4 +1,6 @@
 <x-layout>
+  <div>
+
     <!-- Customer nav block-->
     <x-slot:nav>
         <x-nav-block></x-nav-block>
@@ -7,14 +9,14 @@
         @if($errors->any())
         @foreach($errors->all() as $error)
         <p
-        class="w-screen items-center justify-center flex bg-red-400 text-white px-5">
+        class="items-center justify-center flex bg-red-400 text-white px-5">
           {{ $error }}
         </p>
         @endforeach
         @endif
         <p
           id = "message"
-          class="w-screen items-center justify-center flex bg-green-400 text-white px-5">
+          class="items-center justify-center flex bg-green-400 text-white px-5">
           <!-- Contains JS live message result -->
         </p>
     </div>
@@ -86,6 +88,7 @@
         </button>
       </form>
     </footer>
+  </div>
     <script>
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]').content

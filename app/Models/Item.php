@@ -27,7 +27,15 @@ class Item extends Model
         'chest',
         'user_id',
         'like_count',
+        'is_active'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean'
+        ];
+    }
 
     function user()
     {

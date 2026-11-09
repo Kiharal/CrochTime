@@ -58,6 +58,7 @@ class ItemFactory extends Factory
             'item_name' => $this->faker->word,
             'category_id' => random_int(1, 20),
             'like_count' => 0,
+            'is_active' => true,
         ];
     }
 }

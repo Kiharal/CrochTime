@@ -25,7 +25,7 @@ class IncomingTasks(BaseModel):
 #from processing in python application(table creation, processing.py)
 class ProcessedTask(BaseModel):
     id: int
-    time: int
+    time: float
 
 class CreatedTable(BaseModel):
     frontier: list[ProcessedTask]

@@ -25,7 +25,7 @@ class AuthenticatedSessionController extends Controller
             'password' => ['required', Rules\Password::default()]
         ]);
 
-        if(Auth::guard('cutomer')->attempt($validated)){
+        if(Auth::guard('customer')->attempt($validated)){
             $request->session()->regenerate();
             return redirect()->intended(route('launch'));
         }

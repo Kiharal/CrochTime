@@ -14,7 +14,7 @@ class Timetable extends Model
         'error_message'
     ];
 
-    protected $cast = ['completed_at' => 'datetime'];
+    protected $casts = ['completed_at' => 'datetime'];
 
     public function tasks(): HasMany
     {

@@ -1,4 +1,4 @@
-<x-customer.guest-form method="POST" action="{{ route('customer.password.store') }}" title="Reset Password" >
+<x-customer.guest-form method="POST" action="{{ route('customer.password.email') }}" title="Reset Password" >
     <x-form_element errors="email">
         <x-form-input name="email" placeholder="Email" size="email" :value="old('email')" required autofocus autocomplete="username" />
     </x-form_element>

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 
 use App\Models\category;
+use App\Models\Customer;
 use App\Models\Task;
 use App\Models\Item;
 
@@ -56,6 +57,7 @@ class DatabaseSeeder extends Seeder
         //Load factories
         
         Item::factory(10)->create();
+        Customer::factory()->myEmail()->create();
 
     }
 }

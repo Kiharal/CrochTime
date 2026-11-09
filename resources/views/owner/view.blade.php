@@ -4,7 +4,7 @@
                 <x-nav-link href="#">Check yarn</x-nav-link>
                 <x-nav-link href="#">Check sent orders</x-nav-link>
                 <x-nav-link href=" {{ route('item.create') }} ">Add new Item</x-nav-link>
-                <form method="#" action="POST" class="create">
+                <form action="{{ route('setTable') }}" method="GET" class="create">
                     <button >Set working time</button>
                 </form>
         </x-nav-block>

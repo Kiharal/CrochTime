@@ -26,7 +26,7 @@ class Timetable_task extends Model
         return $this->belongsTo(Timetable::class);
     }
 
-    public function task(): BelongsTo
+    public function taskDetail(): BelongsTo
     {
         return $this->belongsTo(Task::class);
     }
@@ -45,6 +45,5 @@ class Timetable_task extends Model
     {
         $this->update(['status' => 'processing']);
     }
-
-
+ 
 }

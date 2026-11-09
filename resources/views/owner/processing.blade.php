@@ -2,10 +2,12 @@
     <x-slot:nav>
 
     </x-slot:nav>
-    This is processing
+    <div id="loading-screen">
+        This is processing
+    </div>
     <script>
         let id = {{ $timetable->id }}
-        console.log(id)
+        
         addEventListener('DOMContentLoaded', (event) => {
             window.Echo.channel(`api.timetable_set.${id}`)
             .listen('ShowTable', (event) => {
